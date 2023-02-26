@@ -1,0 +1,7 @@
+{
+  "name": "housingAround",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
