@@ -5,12 +5,16 @@ import {
   createUserWithEmailAndPassword,
   signOut
 } from '@angular/fire/auth';
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: Auth) { }
+  constructor(
+    private auth: Auth,
+    private firestore: FirebaseService
+  ) { }
 
   async register({ email, password }) {
     try {
@@ -33,4 +37,5 @@ export class AuthService {
   logout() {
     return signOut(this.auth);
   }
+
 }
