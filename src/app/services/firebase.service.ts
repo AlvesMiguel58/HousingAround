@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, setDoc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
+import { query, where } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 export interface User {
@@ -8,6 +9,17 @@ export interface User {
   name: string;
   surname: string;
   email: string;
+}
+
+export interface Property {
+  id?: string;
+  avatar: string,
+  unit_number: number,
+  street: string,
+  suburb: string,
+  city: string,
+  postal_code: number,
+  userIDs: []
 }
 
 @Injectable({
@@ -29,16 +41,24 @@ export class FirebaseService {
   }
 
   addUser(user: User) {
-    const usersRef = collection(this.firestore, 'users');
-    return addDoc(usersRef, user);
+    // const usersRef = collection(this.firestore, 'users');
+    // return addDoc(usersRef, user);
+
+    return setDoc(doc(this.firestore, "users", user.id), {
+      avatar: null,
+      name: user.name,
+      surname: user.surname,
+      email: user.email
+    });
+
   }
 
-  deleteNote(user: User) {
+  deleteUser(user: User) {
     const userRef = doc(this.firestore, `users/${user.id}`);
     return deleteDoc(userRef);
   }
 
-  updateNote(user: User) {
+  updateUser(user: User) {
     const userRef = doc(this.firestore, `users/${user.id}`);
     return updateDoc(userRef, {
       avatar: user.avatar,
@@ -48,4 +68,28 @@ export class FirebaseService {
     });
   }
   // END OF User controls
+
+  // Property controls
+
+  addProperty(property: Property, uid) {
+    return setDoc(doc(this.firestore, "properties", `${property.unit_number}, ${property.street}, ${property.suburb}`), {
+      avatar: null,
+      unit_number: 26,
+      street: "Camdeboo St",
+      suburb: "Mayberry Park",
+      city: "JHB",
+      postal_code: 2058,
+      userIDs: [uid]
+    });
+  }
+
+  getProperties(uid): Observable<User[]> {
+    const propertyRef = query(
+      collection(this.firestore, 'properties'),
+      where('userIDs', 'array-contains', uid)
+    );
+
+    return collectionData(propertyRef, { idField: 'id' }) as Observable<User[]>;
+  }
+  // END OF Property controls
 }

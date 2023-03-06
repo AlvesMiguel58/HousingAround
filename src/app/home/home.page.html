@@ -20,14 +20,28 @@
                 </ion-content>
             </ng-template>
         </ion-popover>
-        <ion-title>Home</ion-title>
+        <ion-title>Select a Property</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
     <div id="container">
-        <strong>Ready to create a user?</strong>
-        <br />
-        <ion-button color="light" (click)="addUserTest()">Add user</ion-button>
+        <!-- <strong>Select a Property</strong> -->
+
+        <div *ngIf="properties">
+            <ion-list [inset]="true">
+                <ion-item *ngFor="let property of properties" detail="true" button (click)="viewProperty(property)">
+                    <ion-avatar slot="start">
+                        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                    </ion-avatar>
+                    <ion-label>
+                        <h3>{{property.unit_number}} {{property.street}}, {{property.suburb}}</h3>
+                        <p>{{property.city}}, {{property.postal_code}}</p>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <br /><ion-button color="light" (click)="addProperty() ">Add New Property</ion-button>
     </div>
 </ion-content>

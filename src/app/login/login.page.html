@@ -11,25 +11,53 @@
 
     <img src="../../assets/images/house.png" alt="" />
 
-    <form [formGroup]="credentials" (ngSubmit)="login()">
-        <ion-item fill="solid" class="ion-margin-bottom">
-            <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-            <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email is invalid</ion-note>
-        </ion-item>
+    <!-- login Page  -->
+    <ng-container *ngIf="loginPage">
+        <form [formGroup]="credentials">
+            <ion-item fill="solid" class="ion-margin-bottom">
+                <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+                <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email is invalid</ion-note>
+            </ion-item>
 
-        <ion-item fill="solid" class="ion-margin-bottom">
-            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-            <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password needs to be 6 characters</ion-note>
-        </ion-item>
+            <ion-item fill="solid" class="ion-margin-bottom">
+                <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+                <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password needs to be 6 characters</ion-note>
+            </ion-item>
 
-        <div class="log-btn-container">
-            <!-- login Page -->
-            <ion-button class="login-btns" expand="block" *ngIf="loginPage" type="button" color="dark" (click)="loginPage = !loginPage">Register</ion-button>
-            <ion-button class="login-btns" type="submit" color="light" *ngIf="loginPage" [disabled]="!credentials.valid">Log in</ion-button>
+            <div class="log-btn-container">
+                <ion-button class="login-btns" expand="block" type="button" color="dark" (click)="loginPage = !loginPage">Register</ion-button>
+                <ion-button class="login-btns" color="light" [disabled]="!credentials.valid" (click)="login()">Log in</ion-button>
+            </div>
+        </form>
+    </ng-container>
 
-            <!-- Register Page -->
-            <ion-button class="login-btns" *ngIf="!loginPage" type="button" color="dark" (click)="loginPage = true">Back</ion-button>
-            <ion-button class="login-btns" *ngIf="!loginPage" type="button" color="light" [disabled]="!credentials.valid" (click)="register();">Create account</ion-button>
-        </div>
-    </form>
+    <!-- Register Page -->
+    <ng-container *ngIf="!loginPage">
+        <form [formGroup]="registerForm">
+            <ion-item fill="solid" class="ion-margin-bottom">
+                <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
+                <ion-note slot="error" *ngIf="(name.dirty || name.touched) && name.errors">Name is invalid</ion-note>
+            </ion-item>
+
+            <ion-item fill="solid" class="ion-margin-bottom">
+                <ion-input type="text" placeholder="Surname" formControlName="surname"></ion-input>
+                <ion-note slot="error" *ngIf="(surname.dirty || surname.touched) && surname.errors">Surname is invalid</ion-note>
+            </ion-item>
+
+            <ion-item fill="solid" class="ion-margin-bottom">
+                <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+                <ion-note slot="error" *ngIf="(regEmail.dirty || regEmail.touched) && regEmail.errors">Email is invalid</ion-note>
+            </ion-item>
+
+            <ion-item fill="solid" class="ion-margin-bottom">
+                <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+                <ion-note slot="error" *ngIf="(regPassword.dirty || regPassword.touched) && regPassword.errors">Password needs to be 6 characters</ion-note>
+            </ion-item>
+
+            <div class="log-btn-container">
+                <ion-button class="login-btns" type="button" color="dark" (click)="loginPage = true">Back</ion-button>
+                <ion-button class="login-btns" type="button" color="light" [disabled]="!registerForm.valid" (click)="register()">Create account</ion-button>
+            </div>
+        </form>
+    </ng-container>
 </ion-content>
