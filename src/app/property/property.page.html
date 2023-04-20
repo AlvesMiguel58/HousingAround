@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-back-button text="Back" icon="chevron-back-outline" defaultHref="home"> </ion-back-button>
+        </ion-buttons>
+        <ion-title>{{property?.unit_number}} {{property?.street}}</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card *ngIf="property" color="light">
+        <img *ngIf="property?.avatar" [src]="property?.avatar" />
+        <ion-card-header>
+            <ion-card-subtitle>
+                {{property?.suburb}}, {{property?.postal_code}}
+                <br />
+                {{property?.city}}
+            </ion-card-subtitle>
+            <ion-card-title> {{property?.unit_number}} {{property?.street}} </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content *ngIf="users">
+            <ion-chip color="dark" *ngFor="let user of users">
+                <ion-avatar>
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                </ion-avatar>
+                <ion-label>{{user.name}}</ion-label>
+            </ion-chip>
+            <ion-chip color="dark">
+                <!-- <ion-icon name="pin" color="primary"></ion-icon> -->
+                <ion-icon name="add-outline"></ion-icon>
+                <ion-label>Add</ion-label>
+            </ion-chip>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

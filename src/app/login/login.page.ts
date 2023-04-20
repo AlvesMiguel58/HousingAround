@@ -58,9 +58,9 @@ export class LoginPage implements OnInit {
 
     // Register Page
     this.registerForm = this.fb.group({
-      name: ['Miguel', [Validators.required]],
-      surname: ['Alves', [Validators.required]],
-      email: ['migz58@gmail.com', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      email: ['example@test.com', [Validators.required, Validators.email]],
       password: ['Fishinatub5', [Validators.required, Validators.minLength(6)]]
     });
   }

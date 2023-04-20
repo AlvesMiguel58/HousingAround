@@ -17,9 +17,13 @@ const routes: Routes = [
     ...canActivate(redirectUnauthorizedToLogin)
   },
   {
-    path: '**',
+    path: '*',
     redirectTo: '',
     pathMatch: 'full'
+  },
+  {
+    path: 'property/:id',
+    loadChildren: () => import('./property/property.module').then(m => m.PropertyPageModule)
   }
 ];
 

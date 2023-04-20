@@ -1,8 +1,12 @@
-<ion-header [translucent]="true">
+<ion-header>
     <ion-toolbar color="light">
         <ion-buttons slot="secondary">
             <ion-button>
-                <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+                <ion-icon *ngIf="!currentUser" slot="icon-only" name="person-circle"></ion-icon>
+
+                <div class="img-preview" *ngIf="currentUser">
+                    <img class="menu-pp" [src]="currentUser?.avatar" alt="" />
+                </div>
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="primary">
@@ -27,21 +31,55 @@
 <ion-content [fullscreen]="true">
     <div id="container">
         <!-- <strong>Select a Property</strong> -->
+        <ng-container *ngIf="properties">
+            <div>
+                <ion-list [inset]="true">
+                    <ion-item *ngFor="let property of properties" detail="true" button (click)="viewProperty(property)">
+                        <ion-avatar slot="start">
+                            <img [src]="property?.avatar" />
+                        </ion-avatar>
+                        <ion-label>
+                            <h3>{{property.unit_number}} {{property.street}}, {{property.suburb}}</h3>
+                            <p>{{property.city}}, {{property.postal_code}}</p>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </div>
 
-        <div *ngIf="properties">
-            <ion-list [inset]="true">
-                <ion-item *ngFor="let property of properties" detail="true" button (click)="viewProperty(property)">
-                    <ion-avatar slot="start">
-                        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-                    </ion-avatar>
-                    <ion-label>
-                        <h3>{{property.unit_number}} {{property.street}}, {{property.suburb}}</h3>
-                        <p>{{property.city}}, {{property.postal_code}}</p>
-                    </ion-label>
-                </ion-item>
-            </ion-list>
-        </div>
-
-        <br /><ion-button color="light" (click)="addProperty() ">Add New Property</ion-button>
+            <br /><ion-button id="open-modal" color="light">Add New Property</ion-button>
+            <ion-modal trigger="open-modal" (willDismiss)="createProperty($event)">
+                <ng-template>
+                    <ion-header>
+                        <ion-toolbar>
+                            <ion-buttons slot="start">
+                                <ion-button (click)="cancel()">Cancel</ion-button>
+                            </ion-buttons>
+                            <ion-title>Create a Property</ion-title>
+                            <ion-buttons slot="end" *ngIf="newProperty.city!=null">
+                                <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+                            </ion-buttons>
+                        </ion-toolbar>
+                    </ion-header>
+                    <ion-content class="ion-padding">
+                        <ion-item>
+                            <ion-label position="stacked">Please Fill out form, Mr Fancy pants with a house:</ion-label>
+                            <ion-input type="text" placeholder="unit_number" [(ngModel)]="newProperty.unit_number"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-input type="text" placeholder="street" [(ngModel)]="newProperty.street"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-input type="text" placeholder="suburb" [(ngModel)]="newProperty.suburb"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-input type="text" placeholder="postal_code" [(ngModel)]="newProperty.postal_code"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-input type="text" placeholder="city" [(ngModel)]="newProperty.city"></ion-input>
+                        </ion-item>
+                    </ion-content>
+                </ng-template>
+            </ion-modal>
+        </ng-container>
     </div>
 </ion-content>

@@ -72,15 +72,17 @@ export class FirebaseService {
   // Property controls
 
   addProperty(property: Property, uid) {
-    return setDoc(doc(this.firestore, "properties", `${property.unit_number}, ${property.street}, ${property.suburb}`), {
-      avatar: null,
-      unit_number: 26,
-      street: "Camdeboo St",
-      suburb: "Mayberry Park",
-      city: "JHB",
-      postal_code: 2058,
+    return setDoc(doc(this.firestore, "properties", `${property.unit_number} ${property.street} ${property.suburb} ${property.city}`), {
+      avatar: property.avatar,
+      unit_number: property.unit_number,
+      street: property.street,
+      suburb: property.suburb,
+      city: property.city,
+      postal_code: property.postal_code,
       userIDs: [uid]
     });
+    console.log('property', property);
+    console.log('uid', uid);
   }
 
   getProperties(uid): Observable<User[]> {
@@ -90,6 +92,11 @@ export class FirebaseService {
     );
 
     return collectionData(propertyRef, { idField: 'id' }) as Observable<User[]>;
+  }
+
+  getPropertyById(id): Observable<User> {
+    const propertyRef = doc(this.firestore, `properties/${id}`);
+    return docData(propertyRef, { idField: 'id' }) as Observable<User>;
   }
   // END OF Property controls
 }
